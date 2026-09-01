@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "black"}, "id": "9000000001", "label": "9000000001", "shape": "dot", "size": 27, "title": "Connections: 6"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "Rahul Sharma", "label": "Rahul Sharma", "shape": "dot", "size": 25, "title": "Connections: 5"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "Amit Verma", "label": "Amit Verma", "shape": "dot", "size": 25, "title": "Connections: 5"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "Ravi Kumar", "label": "Ravi Kumar", "shape": "dot", "size": 23, "title": "Connections: 4"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "Priya Singh", "label": "Priya Singh", "shape": "dot", "size": 17, "title": "Connections: 1"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "Vikram Gupta", "label": "Vikram Gupta", "shape": "dot", "size": 17, "title": "Connections: 1"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "Suresh Patel", "label": "Suresh Patel", "shape": "dot", "size": 17, "title": "Connections: 1"}, {"color": "#97c2fc", "font": {"color": "black"}, "id": "9000000088", "label": "9000000088", "shape": "dot", "size": 17, "title": "Connections: 1"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "gray", "from": "9000000001", "title": "MENTIONED_WITH\nRahul Sharma met Amit Verma near Bhopal railway station. Ravi Kumar was also mentioned in the meeting. Rahul uses phone 9000000001.", "to": "Rahul Sharma"}, {"arrows": "to", "color": "gray", "from": "9000000001", "title": "MENTIONED_WITH\nRahul Sharma met Amit Verma near Bhopal railway station. Ravi Kumar was also mentioned in the meeting. Rahul uses phone 9000000001.", "to": "Amit Verma"}, {"arrows": "to", "color": "gray", "from": "9000000001", "title": "MENTIONED_WITH\nRahul Sharma met Amit Verma near Bhopal railway station. Ravi Kumar was also mentioned in the meeting. Rahul uses phone 9000000001.", "to": "Ravi Kumar"}, {"arrows": "to", "color": "blue", "from": "9000000001", "title": "CONTACTED\n12 calls on 2026-01-10", "to": "9000000001"}, {"arrows": "to", "color": "blue", "from": "9000000001", "title": "CONTACTED\n15 calls on 2026-01-11", "to": "9000000088"}, {"arrows": "to", "color": "gray", "from": "Rahul Sharma", "title": "MENTIONED_WITH\nRahul Sharma met Amit Verma near Bhopal railway station. Ravi Kumar was also mentioned in the meeting. Rahul uses phone 9000000001.", "to": "Amit Verma"}, {"arrows": "to", "color": "red", "from": "Rahul Sharma", "title": "TRANSFERRED_MONEY\nTX002: 70000", "to": "Ravi Kumar"}, {"arrows": "to", "color": "gray", "from": "Amit Verma", "title": "MENTIONED_WITH\nRahul Sharma met Amit Verma near Bhopal railway station. Ravi Kumar was also mentioned in the meeting. Rahul uses phone 9000000001.", "to": "Ravi Kumar"}, {"arrows": "to", "color": "red", "from": "Amit Verma", "title": "TRANSFERRED_MONEY\nTX001: 80000", "to": "Rahul Sharma"}, {"arrows": "to", "color": "red", "from": "Ravi Kumar", "title": "TRANSFERRED_MONEY\nTX003: 60000", "to": "Amit Verma"}, {"arrows": "to", "color": "red", "from": "Priya Singh", "title": "TRANSFERRED_MONEY\nTX004: 50000", "to": "Vikram Gupta"}, {"arrows": "to", "color": "gray", "from": "Suresh Patel", "title": "MENTIONED_WITH\nSuresh Patel is suspected of orchestrating the logistics. Rahul Sharma was seen at his warehouse.", "to": "Rahul Sharma"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -30000, "springLength": 200}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

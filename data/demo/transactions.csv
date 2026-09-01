@@ -1,0 +1,5 @@
+transaction_id,sender,receiver,amount,date
+TX001,Amit Verma,Rahul Sharma,80000,2026-01-14
+TX002,Rahul Sharma,Ravi Kumar,70000,2026-01-15
+TX003,Ravi Kumar,Amit Verma,60000,2026-01-16
+TX004,Priya Singh,Vikram Gupta,50000,2026-01-17
